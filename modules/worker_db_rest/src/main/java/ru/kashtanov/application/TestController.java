@@ -1,12 +1,7 @@
 package ru.kashtanov.application;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.Collections;
 
-import java.util.Date;
 import java.util.Set;
 
 import javax.ws.rs.GET;
@@ -18,9 +13,10 @@ import javax.ws.rs.core.MediaType;
 
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.osgi.service.component.annotations.Component;
 import ru.kashtanov.dad.model.Dad;
-import ru.kashtanov.dad.service.DadLocalService;
 import ru.kashtanov.dad.service.DadLocalServiceUtil;
 
 
@@ -36,31 +32,46 @@ import ru.kashtanov.dad.service.DadLocalServiceUtil;
         },
         service = Application.class
 )
-public class CrateController extends Application {
+public class TestController extends Application {
 
     public Set<Object> getSingletons() {
         return Collections.singleton(this);
     }
 
+    private static final Log log = LogFactoryUtil.getLog(TestController.class);
+
 
     @GET
     @Path("/test-sammy")
     @Produces(MediaType.TEXT_PLAIN)
-    public String createIriWithTransaction() {
+    public String testApi() {
         try {
-
+            // 1. CREATING a new Entity
             long newId = CounterLocalServiceUtil.increment(Dad.class.getName());
+            Dad newDad = DadLocalServiceUtil.createDad(newId);
+            newDad.setCompanyId(20097);
+            newDad.setName("New_created_DAD_ID: " + newId);
+            log.info("**CREATING** a new entity: " + newDad.toString());
+            DadLocalServiceUtil.addDad(newDad);
 
-            System.out.println("here it is " + newId);
-            Dad iri = DadLocalServiceUtil.createDad(newId);
-            System.out.println(iri.toString());
+            //2. GETTING an Entity
+            Dad dad = DadLocalServiceUtil.getDad(newId);
+            log.info("**GETTING** an entity: " + dad.toString());
 
+            //3. UPDATING an Entity
+            dad.setName("**UPDATING** " + newId);
+            DadLocalServiceUtil.updateDad(dad);
+            log.info("Updated a new entity: " + dad.toString());
+
+            //4. DELETING an Entity
+            DadLocalServiceUtil.deleteDad(dad);
+            log.info("DELETING an entity: " + dad.toString());
             try {
-                DadLocalServiceUtil.addDad(iri);
-            } catch (Exception e) {
-                System.out.println("Exception occured while adding Iri " + e.getMessage());
-                e.printStackTrace();
+                DadLocalServiceUtil.getDad(newId);
+            } catch (PortalException e) {
+                log.error("No such entity: " + dad.toString());
             }
+
 
             return "Success";
 
