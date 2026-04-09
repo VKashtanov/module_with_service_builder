@@ -7,7 +7,7 @@
 
 	<entity name="Dad" local-service="true" remote-service="false">
 
-		<!-- Primary key - БЕЗ id-type -->
+		<!-- Primary key - DON"T ADD TYPE IDENTITY , LET IT BE BY DEFAULT "none"-->
 		<column name="dadId" type="long" primary="true" />
 
 		<!-- Audit fields -->
