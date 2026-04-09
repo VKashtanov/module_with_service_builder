@@ -3,6 +3,6 @@ dependencies {
 	compileOnly group: "org.osgi", name: "org.osgi.service.jaxrs"
 	compileInclude group: "org.postgresql", name: "postgresql", version: "42.5.0"
 
-	compileOnly project(":modules:crate:crate-api") // specify it, to add to project functionality from the other module
+	compileOnly project(":modules:dad:dad-api")
 
 }

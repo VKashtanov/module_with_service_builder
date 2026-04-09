@@ -1,0 +1,12 @@
+dependencies {
+	api project(":modules:dad:dad-api")
+
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+}
+
+buildService {
+	apiDir = "../dad-api/src/main/java"
+	testDir = "../dad-test/src/testIntegration/java"
+}
+
+group = "ru.kashtanov.dad"

@@ -1,0 +1,1 @@
+create index IX_82192294 on Dad_Dad (name[$COLUMN_LENGTH:75$]);

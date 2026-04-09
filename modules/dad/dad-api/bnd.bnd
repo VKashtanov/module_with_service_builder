@@ -1,0 +1,10 @@
+Bundle-Name: dad-api
+Bundle-SymbolicName: ru.kashtanov.dad.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	ru.kashtanov.dad.exception,\
+	ru.kashtanov.dad.model,\
+	ru.kashtanov.dad.service,\
+	ru.kashtanov.dad.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../dad-service/service.xml
